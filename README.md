@@ -17,6 +17,9 @@ portfolio/
 │   └── script.js
 │
 └── assets/
+    ├── profile/
+    │   └── profile-photo.png
+    │
     ├── projects/
     │   ├── make-gmail-automation.png
     │   ├── n8n-customer-support.png
@@ -44,6 +47,23 @@ portfolio/
 All 9 project screenshots and all 5 certificate PDFs (plus a generated thumbnail image for each certificate) are already included and wired up in `js/script.js`. You don't need to add anything to make the site work as-is — the folders below only matter if you want to **swap in your own images later**.
 
 All paths in the code are **relative**, so the site works correctly whether it's hosted at a root domain (`username.github.io`) or a project subpath (`username.github.io/portfolio`).
+
+### Profile photo
+
+Your headshot is at `assets/profile/profile-photo.png` and appears in the glowing circular frame at the center of the hero section. To replace it later, just overwrite that file with a new image of the same name (a square, front-facing photo works best since it's cropped into a circle).
+
+### Brand color
+
+The site uses a **neon red** brand palette. All colors are defined as CSS variables at the top of `css/style.css`:
+
+```css
+--violet:   #ff1440;  /* primary neon red */
+--violet-2: #8a0620;  /* deep red (gradient end / hover) */
+--blue:     #ff4060;  /* secondary red-pink */
+--cyan:     #ff6b35;  /* neon ember accent (AI/bot highlights) */
+```
+
+To adjust the shade, just change these hex values — every gradient, glow, border, and hover state in the site references them, so the whole palette updates consistently.
 
 ---
 
