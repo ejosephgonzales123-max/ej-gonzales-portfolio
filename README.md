@@ -20,11 +20,14 @@ portfolio/
     ├── profile/
     │   └── profile-photo.png
     │
+
     ├── icons/
     │   ├── red/        (16 AI icons in neon red)
     │   ├── ember/      (16 AI icons in neon ember orange-red)
     │   └── source/     (original black icon sheet)
     │
+
+ 9ed1160020d862be0060a69c703a11dc2acd1fe8
     ├── projects/
     │   ├── make-gmail-automation.png
     │   ├── n8n-customer-support.png
@@ -60,6 +63,7 @@ All paths in the code are **relative**, so the site works correctly whether it's
 ### Profile photo
 
 Your headshot is at `assets/profile/profile-photo.png` and appears in the glowing circular frame at the center of the hero section. To replace it later, just overwrite that file with a new image of the same name (a square, front-facing photo works best since it's cropped into a circle).
+
 
 ### AI icon set (decorative styling only)
 
