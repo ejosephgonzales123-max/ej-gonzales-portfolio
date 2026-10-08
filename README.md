@@ -20,14 +20,18 @@ portfolio/
     ├── profile/
     │   └── profile-photo.png
     │
-
     ├── icons/
-    │   ├── red/        (16 AI icons in neon red)
-    │   ├── ember/      (16 AI icons in neon ember orange-red)
+    │   ├── red/        (17 AI icons in neon red)
+    │   ├── ember/      (17 AI icons in neon ember orange-red)
     │   └── source/     (original black icon sheet)
     │
-
- 9ed1160020d862be0060a69c703a11dc2acd1fe8
+    ├── visuals/        (decorative photos/illustrations, recolored to the brand palette)
+    │   ├── visual-holo-hand.webp
+    │   ├── visual-robot-head.webp
+    │   ├── visual-flowchart.webp
+    │   ├── visual-workspace.webp
+    │   └── visual-handshake.webp
+    │
     ├── projects/
     │   ├── make-gmail-automation.png
     │   ├── n8n-customer-support.png
@@ -64,10 +68,13 @@ All paths in the code are **relative**, so the site works correctly whether it's
 
 Your headshot is at `assets/profile/profile-photo.png` and appears in the glowing circular frame at the center of the hero section. To replace it later, just overwrite that file with a new image of the same name (a square, front-facing photo works best since it's cropped into a circle).
 
-
 ### AI icon set (decorative styling only)
 
 The 16 AI/tech icons in `assets/icons/` were cut from your icon sheet, given transparent backgrounds, and recolored to the brand palette (`red/` = neon red, `ember/` = neon ember). They are purely decorative — faint section backdrops, the process-step badges, the hero background, and the footer strip. Each one is marked `alt=""` / `aria-hidden="true"` so screen readers skip them. To change where an icon appears, edit the `<img class="deco ...">` tags in `index.html`; to change how visible they are, adjust `.deco { opacity }` in `css/style.css`.
+
+### Decorative visuals
+
+The five images in `assets/visuals/` are purely decorative (`alt=""`, `aria-hidden="true"`). They were recolored to the neon red / ember palette and their edges are feathered into transparency, so they blend into the dark background. Where they appear: holographic hand (Tools & Technologies), robot head (Automation Projects), flowchart (From Manual Process to Automated System), laptop workspace (Project Experience), and the AI + human handshake (Contact). The conversation icon next to the language cards is `assets/icons/red/ai-talk.png`.
 
 ### Brand color
 

@@ -164,23 +164,37 @@
     },
     {
       id: 'market-analysis',
-      title: 'Multi-Asset Market Analysis & Alert Workflow',
+      title: 'AI-Powered Crypto Market Monitoring & Trading Analysis Automation',
       platform: 'n8n',
       image: 'assets/projects/n8n-market-analysis.png',
       fit: 'contain',
-      description: 'A multi-trigger market-analysis workflow that receives asset-specific webhook triggers, retrieves and cleans 6-hour market data (with a fallback data source), runs code-based analysis for market structure, indicators, swings, sweeps, Fibonacci levels, and golden-zone checks, classifies each setup by status, has a Gemini-powered AI analyst write the report, and posts it to Discord.',
-      problem: 'Checking several assets against a multi-step technical-analysis checklist is time-consuming and easy to do inconsistently by hand.',
-      solution: 'An n8n workflow runs the same analysis steps for every asset, routes each result into a status (Monitor, Developing, Watch Closely, or LTF Ready), and has an AI analyst turn it into a client-ready report delivered to Discord. Built as a technical workflow demonstration; it is not financial advice.',
-      tools: ['n8n', 'Webhooks', 'HTTP Request', 'Code Node', 'Switch Routing', 'Google Gemini', 'AI Agent', 'Discord'],
+      summary: 'Developed an AI-powered crypto market monitoring system using n8n, TradingView, and Google Gemini AI to automate technical market analysis and reduce manual chart monitoring.',
+      description: [
+        'Developed an AI-powered crypto market monitoring system using n8n, TradingView, and Google Gemini AI to automate technical market analysis and reduce manual chart monitoring.',
+        'The workflow monitors multiple cryptocurrencies, including BTC, WLD, SOL, and GRASS, processes market data, evaluates 4-hour (4H) trading conditions, and generates AI-powered reports delivered directly to Discord.',
+        'The system classifies market conditions into MONITOR, DEVELOPING, WATCH CLOSELY, and LTF READY, helping clients understand market activity, identify missing confirmations, and determine when closer attention is needed.'
+      ],
+      tools: ['n8n', 'TradingView', 'Google Gemini AI', 'HTTP Requests & Webhooks', 'JavaScript', 'Discord API'],
+      toolDetails: [
+        ['n8n', 'Workflow automation and orchestration'],
+        ['TradingView', 'Market alerts and webhook triggers'],
+        ['Google Gemini AI', 'AI-powered market analysis and reporting'],
+        ['HTTP Requests & Webhooks', 'Market data retrieval and API integrations'],
+        ['JavaScript', 'Technical calculations, market structure analysis, and conditional logic'],
+        ['Discord API', 'Automated market reports and notifications']
+      ],
       features: [
-        'Multiple asset webhook triggers',
-        'Market data retrieval with fallback source',
-        'Data cleaning and normalization',
-        'Code-based technical analysis steps',
-        'Status-based routing (Monitor / Developing / Watch Closely / LTF Ready)',
-        'AI-generated analyst report',
-        'Discord delivery'
-      ]
+        ['Multi-Crypto Monitoring', 'Tracks BTC, WLD, SOL, and GRASS through automated TradingView alerts.'],
+        ['4H Technical Analysis', 'Evaluates EMA, RSI, MACD, ATR, market structure, and swing highs/lows.'],
+        ['Smart Money Concepts', 'Detects liquidity sweeps, Break of Structure (BOS), and Fibonacci Golden Zone interactions.'],
+        ['Intelligent Status Classification', 'Categorizes market conditions into four actionable monitoring levels.'],
+        ['AI Market Analyst', 'Explains current market conditions, missing confirmations, potential developments, and next monitoring steps.'],
+        ['AI Model Fallback', 'Uses a secondary Gemini model when the primary model fails.'],
+        ['Automated Discord Reporting', 'Delivers structured market analysis and monitoring updates without requiring constant manual chart checks.'],
+        ['Lower-Timeframe Readiness', 'Identifies when 4H conditions meet the configured requirements for further lower-timeframe review.']
+      ],
+      goal: 'To minimize manual crypto chart monitoring, streamline technical analysis, and provide clear, timely market insights through an automated AI-powered reporting system.',
+      note: 'Portfolio project for informational purposes only. It is not financial advice.'
     },
     {
       id: 'news-briefing',
@@ -323,8 +337,12 @@
     return list.map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');
   }
 
-  function listHTML(list) {
-    return '<ul>' + list.map(function (i) { return '<li>' + i + '</li>'; }).join('') + '</ul>';
+  function listHTML(list, sep) {
+    sep = sep || ':';
+    return '<ul>' + list.map(function (i) {
+      if (Array.isArray(i)) return '<li><strong>' + i[0] + '</strong>' + sep + ' ' + i[1] + '</li>';
+      return '<li>' + i + '</li>';
+    }).join('') + '</ul>';
   }
 
   /* ---------------------------------------------------------
@@ -341,7 +359,7 @@
       '</div>' +
       '<div class="project-card__body">' +
         '<h3>' + p.title + '</h3>' +
-        '<p>' + p.description + '</p>' +
+        '<p>' + (p.summary || p.description) + '</p>' +
         '<div class="project-card__tools">' + tagsHTML(p.tools) + '</div>' +
         '<div class="project-card__footer">' +
           '<button class="link-btn" type="button" data-project="' + p.id + '">' +
@@ -396,12 +414,19 @@
     modalImage.alt = p.title + ' workflow screenshot';
     modalPlatform.textContent = p.platform;
     modalTitle.textContent = p.title;
+    var overview = Array.isArray(p.description)
+      ? p.description.map(function (t) { return '<p>' + t + '</p>'; }).join('')
+      : '<p>' + p.description + '</p>';
+    var toolsBlock = p.toolDetails ? listHTML(p.toolDetails, ' –') : '<div class="project-card__tools">' + tagsHTML(p.tools) + '</div>';
+
     modalContent.innerHTML =
-      '<div class="modal-section"><h4>Overview</h4><p>' + p.description + '</p></div>' +
-      '<div class="modal-section"><h4>Problem</h4><p>' + p.problem + '</p></div>' +
-      '<div class="modal-section"><h4>Solution</h4><p>' + p.solution + '</p></div>' +
-      '<div class="modal-section"><h4>Tools Used</h4><div class="project-card__tools">' + tagsHTML(p.tools) + '</div></div>' +
+      '<div class="modal-section"><h4>Overview</h4>' + overview + '</div>' +
+      (p.problem ? '<div class="modal-section"><h4>Problem</h4><p>' + p.problem + '</p></div>' : '') +
+      (p.solution ? '<div class="modal-section"><h4>Solution</h4><p>' + p.solution + '</p></div>' : '') +
+      '<div class="modal-section"><h4>Tools Used</h4>' + toolsBlock + '</div>' +
       '<div class="modal-section"><h4>Key Workflow Features</h4>' + listHTML(p.features) + '</div>' +
+      (p.goal ? '<div class="modal-section"><h4>Project Goal</h4><p>' + p.goal + '</p></div>' : '') +
+      (p.note ? '<div class="modal-section"><p class="modal-note">' + p.note + '</p></div>' : '') +
       '<div class="modal-section"><a class="btn btn--ghost" href="' + p.image + '" target="_blank" rel="noopener">Open Full-Size Screenshot</a></div>';
 
     openModal();

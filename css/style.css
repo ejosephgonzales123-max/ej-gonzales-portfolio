@@ -1197,3 +1197,87 @@ button{ font-family: inherit; cursor: pointer; }
   .icon-strip{ gap: 20px; }
   .icon-strip img{ width: 28px; height: 28px; }
 }
+
+/* =========================================================
+   Decorative visuals — recolored to the brand palette
+   (neon red + ember; edges are feathered in the image files)
+========================================================= */
+.visual{
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 36px rgba(255,20,64,0.25));
+  animation: visual-float 9s ease-in-out infinite;
+}
+@keyframes visual-float{
+  0%, 100%{ transform: translateY(0); }
+  50%{ transform: translateY(-8px); }
+}
+
+/* Section heads with a visual on the right */
+.section-head--split{
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 40px;
+  align-items: center;
+}
+.section-head__text{ max-width: 560px; }
+.section-head--split .visual{ justify-self: end; }
+.section-head--split .visual--holo{ max-width: 500px; }
+.section-head--split .visual--head{ max-width: 270px; margin-right: 40px; }
+.section-head--split .visual--flow{ max-width: 340px; margin-right: 20px; }
+
+/* Experience: timeline + workspace visual */
+.split-layout{
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 56px;
+  align-items: center;
+}
+.visual--side{ max-width: 480px; justify-self: end; }
+
+/* Contact: AI + human handshake banner */
+.visual--banner{
+  max-width: 900px;
+  margin: -16px auto 28px;
+}
+
+/* Languages: conversation icon next to the cards */
+.language-row{
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  flex-wrap: wrap;
+}
+.language-icon{
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 22px rgba(255,20,64,0.55));
+  animation: visual-float 8s ease-in-out infinite;
+}
+
+/* Project modal: detailed lists + note */
+.modal-section li strong{ color: var(--text); font-weight: 500; }
+.modal-section p + p{ margin-top: 10px; }
+.modal-section .modal-note{
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--text-faint);
+}
+
+@media (max-width: 880px){
+  .section-head--split{ grid-template-columns: 1fr; gap: 24px; }
+  .section-head--split .visual{ justify-self: start; margin-right: 0; max-width: 340px; }
+  .section-head--split .visual--head{ max-width: 220px; }
+  .split-layout{ grid-template-columns: 1fr; gap: 28px; }
+  .visual--side{ justify-self: center; max-width: 420px; }
+  .language-row{ gap: 36px; }
+}
+@media (max-width: 560px){
+  .language-icon{ width: 110px; height: 110px; }
+  .visual--banner{ margin-top: -8px; }
+}
