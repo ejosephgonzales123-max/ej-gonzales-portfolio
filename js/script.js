@@ -124,6 +124,84 @@
       ]
     },
     {
+      id: 'business-report',
+      title: 'AI Business Report Generator',
+      platform: 'n8n',
+      image: 'assets/projects/n8n-business-report.png',
+      description: 'A scheduled reporting workflow that reads business data from Google Sheets, selects the latest and previous records, calculates report figures, has an AI business analyst (Google Gemini) write the analysis, formats the result as an HTML report, and sends it by email through Gmail.',
+      problem: 'Recurring business reports are repetitive to compile by hand: pulling the figures, comparing periods, writing a summary, and formatting the email.',
+      solution: 'A scheduled n8n workflow pulls the data from Google Sheets, compares the latest period against the previous one, uses an AI analyst to write the commentary, and delivers a formatted HTML report automatically.',
+      tools: ['n8n', 'Google Sheets', 'Code Node', 'Google Gemini', 'AI Agent', 'HTML Template', 'Gmail'],
+      features: [
+        'Scheduled trigger',
+        'Google Sheets data retrieval',
+        'Latest vs. previous record comparison',
+        'Calculated report metrics',
+        'AI-written business analysis',
+        'HTML report formatting',
+        'Automated email delivery'
+      ]
+    },
+    {
+      id: 'lead-qualification',
+      title: 'AI Lead Qualification & Scoring',
+      platform: 'n8n',
+      image: 'assets/projects/n8n-lead-qualification.png',
+      description: 'A lead-handling workflow that receives submissions through a webhook, validates the lead data, uses an AI model to qualify the lead, calculates a lead score, and routes each lead as hot, warm, or cold: sending a hot-lead alert, a warm follow-up email, or saving cold leads to a Google Sheets CRM.',
+      problem: 'New leads arrive with varying quality, and deciding which ones need immediate attention takes manual review.',
+      solution: 'An n8n workflow validates each submission, has an AI model qualify it, calculates a score, and routes the lead down a hot, warm, or cold path with the matching email or record update.',
+      tools: ['n8n', 'Webhook', 'Google Gemini', 'AI Agent', 'Code Node', 'Gmail', 'Google Sheets'],
+      features: [
+        'Webhook lead intake',
+        'Lead data validation',
+        'AI lead qualification',
+        'Lead scoring',
+        'Hot / Warm / Cold routing',
+        'Hot-lead email alerts',
+        'Warm-lead follow-up emails',
+        'Cold-lead storage in Google Sheets'
+      ]
+    },
+    {
+      id: 'market-analysis',
+      title: 'Multi-Asset Market Analysis & Alert Workflow',
+      platform: 'n8n',
+      image: 'assets/projects/n8n-market-analysis.png',
+      fit: 'contain',
+      description: 'A multi-trigger market-analysis workflow that receives asset-specific webhook triggers, retrieves and cleans 6-hour market data (with a fallback data source), runs code-based analysis for market structure, indicators, swings, sweeps, Fibonacci levels, and golden-zone checks, classifies each setup by status, has a Gemini-powered AI analyst write the report, and posts it to Discord.',
+      problem: 'Checking several assets against a multi-step technical-analysis checklist is time-consuming and easy to do inconsistently by hand.',
+      solution: 'An n8n workflow runs the same analysis steps for every asset, routes each result into a status (Monitor, Developing, Watch Closely, or LTF Ready), and has an AI analyst turn it into a client-ready report delivered to Discord. Built as a technical workflow demonstration; it is not financial advice.',
+      tools: ['n8n', 'Webhooks', 'HTTP Request', 'Code Node', 'Switch Routing', 'Google Gemini', 'AI Agent', 'Discord'],
+      features: [
+        'Multiple asset webhook triggers',
+        'Market data retrieval with fallback source',
+        'Data cleaning and normalization',
+        'Code-based technical analysis steps',
+        'Status-based routing (Monitor / Developing / Watch Closely / LTF Ready)',
+        'AI-generated analyst report',
+        'Discord delivery'
+      ]
+    },
+    {
+      id: 'news-briefing',
+      title: 'AI Crypto News Briefing Automation',
+      platform: 'n8n',
+      image: 'assets/projects/n8n-news-briefing.png',
+      description: 'A scheduled workflow that runs every two hours, collects headlines from CoinDesk, Cointelegraph, and FXStreet Crypto RSS feeds plus top-gainer data from the AltFINS API, merges and prepares the data, builds a prompt for an AI agent (Google Gemini), and delivers the generated briefing by Gmail and Discord.',
+      problem: 'Keeping up with news from several sources and turning it into a single readable briefing takes repeated manual effort.',
+      solution: 'An n8n workflow gathers the feeds and market-mover data on a schedule, combines them into one prompt, and has an AI agent write a briefing that is formatted and sent by email and Discord.',
+      tools: ['n8n', 'RSS Feeds', 'HTTP Request', 'Code Node', 'Google Gemini', 'AI Agent', 'Gmail', 'Discord'],
+      features: [
+        'Scheduled runs (every 2 hours)',
+        'Multi-source RSS aggregation',
+        'API data retrieval',
+        'Data merging and preparation',
+        'Dynamic prompt building',
+        'AI-generated briefing',
+        'Email and Discord delivery'
+      ]
+    },
+    {
       id: 'social-content',
       title: 'AI Social Media Content Automation',
       platform: 'Zapier',
@@ -257,7 +335,7 @@
   PROJECTS.forEach(function (p) {
     var card = el('article', 'project-card reveal');
     card.innerHTML =
-      '<div class="project-card__media">' +
+      '<div class="project-card__media' + (p.fit === 'contain' ? ' project-card__media--wide' : '') + '">' +
         '<span class="project-card__platform">' + p.platform + '</span>' +
         '<img src="' + p.image + '" alt="' + p.title + ' workflow screenshot" loading="lazy">' +
       '</div>' +
@@ -323,7 +401,8 @@
       '<div class="modal-section"><h4>Problem</h4><p>' + p.problem + '</p></div>' +
       '<div class="modal-section"><h4>Solution</h4><p>' + p.solution + '</p></div>' +
       '<div class="modal-section"><h4>Tools Used</h4><div class="project-card__tools">' + tagsHTML(p.tools) + '</div></div>' +
-      '<div class="modal-section"><h4>Key Workflow Features</h4>' + listHTML(p.features) + '</div>';
+      '<div class="modal-section"><h4>Key Workflow Features</h4>' + listHTML(p.features) + '</div>' +
+      '<div class="modal-section"><a class="btn btn--ghost" href="' + p.image + '" target="_blank" rel="noopener">Open Full-Size Screenshot</a></div>';
 
     openModal();
   }
