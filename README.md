@@ -8,119 +8,36 @@ A static, responsive personal portfolio site built with plain HTML, CSS, and van
 
 ```
 portfolio/
-│
 ├── index.html
 ├── README.md
-├── css/
-│   └── style.css
-├── js/
-│   └── script.js
-│
+├── css/style.css
+├── js/script.js
 └── assets/
-    ├── profile/
-    │   └── profile-photo.png
-    │
-    ├── icons/
-    │   ├── red/        (17 AI icons in neon red)
-    │   ├── ember/      (17 AI icons in neon ember orange-red)
-    │   └── source/     (original black icon sheet)
-    │
-    ├── visuals/        (decorative photos/illustrations, recolored to the brand palette)
-    │   ├── visual-holo-hand.webp
-    │   ├── visual-robot-head.webp
-    │   ├── visual-flowchart.webp
-    │   ├── visual-workspace.webp
-    │   └── visual-handshake.webp
-    │
-    ├── projects/
-    │   ├── make-gmail-automation.png
-    │   ├── n8n-customer-support.png
-    │   ├── n8n-resume-automation.png
-    │   ├── n8n-video-automation.png
-    │   ├── n8n-appointment-automation.png
-    │   ├── n8n-recruitment-automation.png
-    │   ├── n8n-business-report.png
-    │   ├── n8n-lead-qualification.png
-    │   ├── n8n-market-analysis.png
-    │   ├── n8n-news-briefing.png
-    │   ├── zapier-social-media.png
-    │   ├── zapier-sales-pipeline.png
-    │   └── zapier-lead-enrichment.png
-    │
-    └── certificates/
-        ├── n8n-certificate.pdf
-        ├── n8n-certificate-thumb.png
-        ├── zapier-certificate.pdf
-        ├── zapier-certificate-thumb.png
-        ├── make-certificate.pdf
-        ├── make-certificate-thumb.png
-        ├── ghl-certificate.pdf
-        ├── ghl-certificate-thumb.png
-        ├── prompt-engineering-certificate.pdf
-        └── prompt-engineering-certificate-thumb.png
+    ├── profile/profile-photo.webp
+    ├── icons/            (6 neon-red AI icons used in Tools & Technologies)
+    ├── visuals/visual-handshake.webp   (contact section only)
+    ├── projects/         (12 workflow screenshots, .png)
+    └── certificates/     (5 PDFs + 5 .webp preview thumbnails)
 ```
 
-All 13 project screenshots and all 5 certificate PDFs (plus a generated thumbnail image for each certificate) are already included and wired up in `js/script.js`. You don't need to add anything to make the site work as-is — the folders below only matter if you want to **swap in your own images later**.
+All paths are **relative**, so the site works from a root domain (`username.github.io`) or a project subpath (`username.github.io/portfolio`).
 
-All paths in the code are **relative**, so the site works correctly whether it's hosted at a root domain (`username.github.io`) or a project subpath (`username.github.io/portfolio`).
+### Design system
 
-### Profile photo
+A dark "control room" look: oxblood-black background, neon red signal color, Archivo + IBM Plex Sans + IBM Plex Mono, hairline borders, no heavy shadows. Colors and fonts are CSS variables at the top of `css/style.css` — change the red there and the whole site follows.
 
-Your headshot is at `assets/profile/profile-photo.png` and appears in the glowing circular frame at the center of the hero section. To replace it later, just overwrite that file with a new image of the same name (a square, front-facing photo works best since it's cropped into a circle).
+### Editing content
 
-### AI icon set (decorative styling only)
-
-The 16 AI/tech icons in `assets/icons/` were cut from your icon sheet, given transparent backgrounds, and recolored to the brand palette (`red/` = neon red, `ember/` = neon ember). They are purely decorative — faint section backdrops, the process-step badges, the hero background, and the footer strip. Each one is marked `alt=""` / `aria-hidden="true"` so screen readers skip them. To change where an icon appears, edit the `<img class="deco ...">` tags in `index.html`; to change how visible they are, adjust `.deco { opacity }` in `css/style.css`.
-
-### Decorative visuals
-
-The five images in `assets/visuals/` are purely decorative (`alt=""`, `aria-hidden="true"`). They were recolored to the neon red / ember palette and their edges are feathered into transparency, so they blend into the dark background. Where they appear: holographic hand (Tools & Technologies), robot head (Automation Projects), flowchart (From Manual Process to Automated System), laptop workspace (Project Experience), and the AI + human handshake (Contact). The conversation icon next to the language cards is `assets/icons/red/ai-talk.png`.
-
-### Brand color
-
-The site uses a **neon red** brand palette. All colors are defined as CSS variables at the top of `css/style.css`:
-
-```css
---violet:   #ff1440;  /* primary neon red */
---violet-2: #8a0620;  /* deep red (gradient end / hover) */
---blue:     #ff4060;  /* secondary red-pink */
---cyan:     #ff6b35;  /* neon ember accent (AI/bot highlights) */
-```
-
-To adjust the shade, just change these hex values — every gradient, glow, border, and hover state in the site references them, so the whole palette updates consistently.
+- **Projects and certificates** live in the `PROJECTS` and `CERTS` arrays at the top of `js/script.js`. Add an object, drop the screenshot into `assets/projects/`, and the card, filter count and modal update automatically.
+- **Certificate thumbnails**: generate from a PDF with `pdftoppm -png -r 100 -f 1 -l 1 file.pdf thumb`, then convert to `.webp` (or use `.png` and update the path in `CERTS`).
+- **Profile photo**: overwrite `assets/profile/profile-photo.webp` with a square photo.
+- **Social preview**: after publishing, replace the relative `og:image` in `index.html` with the full `https://` URL of the image.
 
 ---
 
-## 2. Replacing project screenshots (optional)
+## 2. Testing locally
 
-If you want to swap a screenshot for a newer one later:
-
-1. Export/save your new screenshot as a `.png` (or `.jpg` — just update the extension in `js/script.js`).
-2. Name it to match (or update) the corresponding entry in the `PROJECTS` array near the top of `js/script.js`, e.g.:
-   ```js
-   image: 'assets/projects/make-gmail-automation.png',
-   ```
-3. Drop the file into `assets/projects/`, replacing the old one (keep the same filename to avoid editing the JS).
-
----
-
-## 3. Replacing certificates (optional)
-
-Each certificate needs **two files**:
-- The full PDF (opened when "View Certificate" is clicked)
-- A thumbnail image shown on the card (PNG/JPG)
-
-To generate a thumbnail from a PDF locally (macOS/Linux with `poppler` installed):
-```bash
-pdftoppm -png -r 100 -f 1 -l 1 your-certificate.pdf your-certificate-thumb
-```
-This produces `your-certificate-thumb-1.png` — rename it to match the filename referenced in the `CERTS` array in `js/script.js`, e.g. `assets/certificates/n8n-certificate-thumb.png`.
-
-If you don't have `poppler`, you can also just take a screenshot of the certificate and save it as the thumbnail.
-
----
-
-## 4. Testing locally
+Open `index.html` directly, or from the `portfolio/` folder run `python3 -m http.server 8000` and visit http://localhost:8000.
 
 You don't need Node.js or any build tools. Any of the following works:
 
@@ -146,7 +63,7 @@ Check that:
 
 ---
 
-## 5. Creating a GitHub repository
+## 3. Creating a GitHub repository
 
 1. Go to [github.com/new](https://github.com/new).
 2. Repository name: `portfolio` (or any name you like — this becomes part of your URL).
@@ -156,7 +73,7 @@ Check that:
 
 ---
 
-## 6. Uploading / pushing the project to GitHub
+## 4. Uploading / pushing the project to GitHub
 
 From inside your local `portfolio/` folder, open a terminal:
 
@@ -175,7 +92,7 @@ Replace `YOUR-USERNAME` with your actual GitHub username.
 
 ---
 
-## 7. Enabling GitHub Pages
+## 5. Enabling GitHub Pages
 
 1. On your repository's GitHub page, click **Settings**.
 2. In the left sidebar, click **Pages**.
@@ -185,7 +102,7 @@ Replace `YOUR-USERNAME` with your actual GitHub username.
 
 ---
 
-## 8. Getting your live portfolio URL
+## 6. Getting your live portfolio URL
 
 Once deployment finishes, your site will be live at:
 
@@ -202,6 +119,6 @@ Any time you push new commits to `main`, GitHub Pages automatically rebuilds and
 ## Notes
 
 - This site is 100% static — no backend, no database, no build step, no external JS frameworks.
-- External resources used: Google Fonts (Space Grotesk, Inter, JetBrains Mono) — no other CDNs or paid icon services.
+- External resources used: Google Fonts (Archivo, IBM Plex Sans, IBM Plex Mono) — no other CDNs or paid icon services.
 - All icons are inline SVG, so nothing depends on an icon font or paid service.
 - Reduced-motion is respected (`prefers-reduced-motion`), and the mobile menu, modals, and buttons are keyboard-accessible.
