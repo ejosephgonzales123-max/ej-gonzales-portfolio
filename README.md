@@ -16,7 +16,7 @@ portfolio/
     ├── profile/profile-photo.webp
     ├── icons/            (6 neon-red AI icons used in Tools & Technologies)
     ├── visuals/visual-handshake.webp   (contact section only)
-    ├── projects/         (12 workflow screenshots, .png)
+    ├── projects/         (13 workflow screenshots, .png; one short .mp4 clip)
     └── certificates/     (5 PDFs + 5 .webp preview thumbnails)
 ```
 

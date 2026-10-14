@@ -72,6 +72,43 @@
       note: 'Portfolio project for demonstration only. It is not financial advice.'
     },
     {
+      id: 'clickup-ai-assistant',
+      title: 'ClickUp AI Task Assistant with Vertex AI',
+      platform: 'n8n',
+      trigger: 'New ClickUp task comment',
+      image: 'assets/projects/n8n-clickup-ai-assistant.png',
+      video: 'assets/projects/n8n-clickup-ai-assistant.mp4',
+      fit: 'contain',
+      tagline: 'Replies to comments inside ClickUp tasks with an AI answer. It reads the task and its comment thread, asks Google Vertex AI for a structured response and posts it back as a comment.',
+      overview: [
+        'A comment-triggered assistant that lives inside ClickUp. When a new comment arrives on a task, the workflow gathers the task details and the full comment history, sends that context to Google Vertex AI, and posts the answer back to the same task, so the team gets help without leaving ClickUp.',
+        'Guard and validation steps keep it well behaved: it only continues for a qualifying new comment, checks the gathered context before calling the model, validates the model output, and falls back to an error reply instead of failing silently.'
+      ],
+      steps: [
+        'A ClickUp trigger fires on every new task comment.',
+        'A config step holds the non-secret settings, such as the Google Cloud project details.',
+        'A bot-mention guard stops the run unless the new comment should get a reply, which prevents the workflow from answering its own comments.',
+        'Two HTTP requests to the ClickUp API load the task and its comment thread.',
+        'A JavaScript step builds the Vertex AI request: the prompt, the task context and a response schema for structured output.',
+        'A check confirms the context is usable. If it is not, the AI call is skipped and the workflow goes straight to posting.',
+        'The Vertex AI generateContent request is sent with a service-account OAuth token.',
+        'On success, a code step parses and validates the answer. On error, a separate step formats a clear error reply.',
+        'The result is posted back to the task as a ClickUp comment.'
+      ],
+      tools: ['n8n', 'ClickUp API', 'ClickUp Trigger', 'Google Vertex AI', 'Service-Account OAuth', 'HTTP Requests', 'JavaScript Code Nodes'],
+      features: [
+        ['Comment-triggered', 'Starts from a new task comment, so nobody has to open another tool.'],
+        ['Full task context', 'Reads both the task and its comment history before answering.'],
+        ['Reply guard', 'Ignores comments that should not get a response, preventing loops.'],
+        ['Structured AI output', 'Uses a response schema so the answer can be parsed and validated.'],
+        ['Secure authentication', 'Calls Vertex AI with a service-account OAuth token.'],
+        ['Error handling', 'Success and error branches both end in a comment on the task.'],
+        ['Run visibility', 'The screenshot and clip show a completed run through every node.']
+      ],
+      goal: 'Bring an AI assistant into the place where work already happens, so questions on a ClickUp task get a useful answer in the same comment thread.',
+      note: 'Portfolio project built to demonstrate the workflow.'
+    },
+    {
       id: 'gmail-organizer',
       title: 'AI-Powered Gmail Attachment Organizer',
       platform: 'Make.com',
@@ -360,7 +397,7 @@
       }).join('') + '</ul>' : '';
 
       card.innerHTML =
-        '<div class="project__media' + (p.featured ? '' : '') + '">' +
+        '<div class="project__media' + (p.fit === 'contain' ? ' project__media--contain' : '') + '">' +
           '<span class="project__platform">' + p.platform + '</span>' +
           '<img src="' + p.image + '" alt="' + p.title + ' workflow screenshot" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async">' +
         '</div>' +
@@ -438,9 +475,31 @@
 
   function byId(arr, id) { return arr.filter(function (x) { return x.id === id; })[0]; }
 
+  function setMedia(p) {
+    var media = $('modalMedia');
+    var old = media.querySelector('video');
+    if (old) { old.pause(); media.removeChild(old); }
+    mImg.style.display = '';
+    if (p.video) {
+      var v = document.createElement('video');
+      v.src = p.video;
+      v.poster = p.image;
+      v.controls = true;
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.preload = 'none';
+      v.setAttribute('aria-label', p.title + ' workflow run');
+      v.style.cssText = 'display:block;width:100%;max-height:56vh;margin:0 auto;object-fit:contain';
+      media.insertBefore(v, mImg);
+      mImg.style.display = 'none';
+    }
+  }
+
   function renderProject(p) {
     mImg.src = p.image;
     mImg.alt = p.title + ' workflow screenshot';
+    setMedia(p);
 
     var left = '<div class="m-sec"><h4>Overview</h4>' + p.overview.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div>';
     if (p.lanes) {
@@ -463,6 +522,7 @@
   }
 
   function renderCert(c) {
+    setMedia({});
     mImg.src = c.thumb;
     mImg.alt = c.name + ' certificate';
     mBody.innerHTML =
