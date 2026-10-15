@@ -109,6 +109,64 @@
       note: 'Portfolio project built to demonstrate the workflow.'
     },
     {
+      id: 'email-triage-system',
+      title: 'AI Email Triage & Draft Reply System',
+      platform: 'n8n',
+      trigger: 'New Gmail message in a shared inbox',
+      image: 'assets/projects/n8n-email-triage-system.png',
+      video: 'assets/projects/n8n-email-triage-system.mp4',
+      fit: 'contain',
+      tagline: 'Polls a shared Gmail inbox, skips duplicates and automated mail, has two Vertex AI (Gemini) steps classify each email and draft a reply, tracks every message in Airtable and alerts a person when it needs review.',
+      overview: [
+        'A production-style email workflow built in three stages. It watches a shared Gmail inbox, makes sure each message is processed only once, uses AI to understand and answer it, and applies business rules to decide whether a human needs to step in.',
+        'Reliability is built into the design: duplicate detection, schema-enforced JSON from the AI, retries with a safe fallback, an Airtable status for every email, and a separate error workflow that alerts the admin if something breaks.'
+      ],
+      lanes: [
+        {
+          name: 'Intake & duplicate prevention',
+          steps: [
+            'Gmail polls the shared inbox every minute.',
+            'A normalize step cleans the message text and skips automated mail.',
+            'Airtable is searched for an existing record with the same Gmail ID or the same content fingerprint.',
+            'If the message was already processed, it is skipped as a duplicate.',
+            'Otherwise a log record is created in Airtable with the status Processing.'
+          ]
+        },
+        {
+          name: 'AI: classify, then draft',
+          steps: [
+            'Two separate Vertex AI (Gemini) calls use schema-enforced JSON: the first classifies the email, the second drafts a reply.',
+            'Classification is parsed and validated, with a safe fallback if the output is unusable.',
+            'Prompts live in an AI Prompts node, so they can be edited without touching code.',
+            'Each AI call retries three times and then falls back to the error path.'
+          ]
+        },
+        {
+          name: 'Rules, logging & notification',
+          steps: [
+            'Business rules decide whether a person should review: classification confidence below 80%, a refund request, an AI flag, or an AI failure.',
+            'The Airtable record moves from Processing to Draft Ready, Needs Review or AI Error, with the AI results saved on the row.',
+            'When review is needed, a notification is built and an internal alert is sent by Gmail.',
+            'Whether the alert was sent or failed is recorded back on the Airtable row.',
+            'A separate error trigger emails the admin if the workflow itself fails.'
+          ]
+        }
+      ],
+      tools: ['n8n', 'Gmail', 'Airtable', 'Google Vertex AI (Gemini)', 'JSON Schema', 'HTTP Requests', 'JavaScript Code Nodes', 'Error Trigger'],
+      features: [
+        ['Duplicate prevention', 'Checks Gmail ID and a content fingerprint so no email is handled twice.'],
+        ['Automated-mail filtering', 'Cleans messages and skips auto-generated email.'],
+        ['Two-step AI', 'Separate classify and draft calls, each returning schema-enforced JSON.'],
+        ['Safe failure handling', 'Retries three times, validates output and falls back to an error status.'],
+        ['Human review rules', 'Flags low confidence, refunds, AI flags and failures for a person.'],
+        ['Airtable status tracking', 'Every email moves through Processing, Draft Ready, Needs Review or AI Error.'],
+        ['Editable prompts and settings', 'Config and AI Prompts nodes keep settings out of the code.'],
+        ['Admin error alerts', 'A dedicated error workflow notifies the admin by email.']
+      ],
+      goal: 'Handle incoming shared-inbox email faster and more consistently by letting AI classify and draft, while keeping a person in the loop for anything uncertain or sensitive.',
+      note: 'Portfolio project built to demonstrate the workflow. Replies are prepared as drafts for review.'
+    },
+    {
       id: 'gmail-organizer',
       title: 'AI-Powered Gmail Attachment Organizer',
       platform: 'Make.com',
@@ -392,7 +450,7 @@
       card.setAttribute('data-platform', p.platform);
       card.style.setProperty('--d', Math.min(i % 3, 2) * 60 + 'ms');
 
-      var lanes = p.lanes ? '<ul class="lanes">' + p.lanes.map(function (l) {
+      var lanes = (p.featured && p.lanes) ? '<ul class="lanes">' + p.lanes.map(function (l) {
         return '<li><b>' + l.name + '</b>' + l.short + '</li>';
       }).join('') + '</ul>' : '';
 
