@@ -783,13 +783,10 @@
     fr.title = 'Schedule a discovery call';
     fr.loading = 'lazy';
     calPanel.appendChild(fr);
-    var a = document.createElement('a');
-    a.className = 'book__open';
-    a.href = calBase;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    a.textContent = 'Open calendar in Calendly';
-    calPanel.appendChild(a);
+    var foot = document.createElement('div');
+    foot.className = 'book__foot';
+    foot.innerHTML = '<span>Meeting link is sent to you by email.</span><span>Timezone auto-detected</span>';
+    calPanel.appendChild(foot);
     calState.shown = true;
   }
 

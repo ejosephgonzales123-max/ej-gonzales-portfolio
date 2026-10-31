@@ -34,10 +34,10 @@ The scrolling strip above "Tools & Technologies" is the `<ul id="logosTrack">` l
 
 ### Booking calendar (Calendly)
 
-The last section, "Book a Discovery Call", shows your live Calendly calendar. The pre-qualifying questions are asked by Calendly when the visitor picks a time.
+The last section, "Book a Discovery Call", shows your live Calendly calendar (already linked to https://calendly.com/ejoseph-gonzales123/discovery-call). The pre-qualifying questions are asked by Calendly when the visitor picks a time.
 
 1. In Calendly, create an event type (for example "Discovery Call").
-2. Under **Invitee questions**, add these five questions (they match the list shown beside the calendar):
+2. Under **Invitee questions**, add these five questions:
    1. What do you want to automate?
    2. Which tools do you use today?
    3. How is it handled today?

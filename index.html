@@ -422,27 +422,14 @@ try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') 
 <!-- ============ BOOK A CALL ============ -->
 <!-- To turn on the live calendar, paste your Calendly event link into data-calendly below,
      e.g. data-calendly="https://calendly.com/your-username/discovery-call" -->
-<section class="section" id="book" data-section data-calendly="">
+<section class="section" id="book" data-section data-calendly="https://calendly.com/ejoseph-gonzales123/discovery-call">
   <div class="container">
     <div class="section__head">
       <h2>Book a Discovery Call</h2>
-      <p>Pick a time that works for you. A short call is enough to understand your process and see what can be automated.</p>
+      <p>Choose a time that works for you. You will be asked a few quick questions about what you want to automate, the tools you use and your budget.</p>
     </div>
 
     <div class="book">
-      <aside class="book__side">
-        <h3>Before the call</h3>
-        <p>When you choose a time, you'll be asked a few quick questions so we can use the call well:</p>
-        <ol class="book__qs">
-          <li>What do you want to automate?</li>
-          <li>Which tools do you use today?</li>
-          <li>How is it handled today?</li>
-          <li>What is your estimated budget?</li>
-          <li>When do you want to start?</li>
-        </ol>
-        <p class="book__note">Prefer email? Write to <a href="mailto:ejoseph.gonzales123@gmail.com">ejoseph.gonzales123@gmail.com</a>.</p>
-      </aside>
-
       <div class="book__cal" id="calPanel">
         <!-- Shown until a Calendly link is set: questions by email -->
         <form class="qual" id="qualForm" novalidate>
@@ -510,6 +497,7 @@ try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') 
           <button type="submit" class="btn btn--primary" id="qualSubmit">Send my answers by email</button>
         </form>
       </div>
+      <p class="book__note">Prefer to message first? Connect with me on <a href="https://www.linkedin.com/in/emmanuel-joseph-gonzales-075a60236/" target="_blank" rel="noopener">LinkedIn</a> or write to <a href="mailto:ejoseph.gonzales123@gmail.com">ejoseph.gonzales123@gmail.com</a>.</p>
     </div>
   </div>
 </section>
