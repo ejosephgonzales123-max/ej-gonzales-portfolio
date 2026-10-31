@@ -15,12 +15,37 @@ portfolio/
 └── assets/
     ├── profile/profile-photo.webp
     ├── icons/            (6 neon-red AI icons used in Tools & Technologies)
+    ├── logos/            (17 brand logos for the scrolling strip, .webp)
     ├── visuals/visual-handshake.webp   (contact section only)
     ├── projects/         (14 workflow screenshots, .png; short .mp4 clips for some)
     └── certificates/     (5 PDFs + 5 .webp preview thumbnails)
 ```
 
 All paths are **relative**, so the site works from a root domain (`username.github.io`) or a project subpath (`username.github.io/portfolio`).
+
+
+### Light / dark mode
+
+The moon/sun button in the navbar switches themes and remembers the choice in the visitor's browser. Dark is the default. All light-theme colors are in the `:root[data-theme="light"]` block at the top of `css/style.css`.
+
+### Logo strip
+
+The scrolling strip above "Tools & Technologies" is the `<ul id="logosTrack">` list in `index.html`. To add a logo, put a square `.webp` in `assets/logos/` and copy one `<li class="logo">` line. It pauses on hover and stays still for visitors who prefer reduced motion.
+
+### Booking calendar (Calendly)
+
+The last section, "Book a Discovery Call", asks pre-qualifying questions and then shows your Calendly calendar.
+
+1. In Calendly, create an event type (for example "Discovery Call").
+2. Under **Invitee questions**, add these five questions **in this order** so the visitor's answers prefill:
+   1. What do you want to automate?
+   2. Which tools do you use today?
+   3. How is it handled today?
+   4. Estimated budget (USD)
+   5. When do you want to start?
+3. In `index.html`, find `<section ... id="book" data-section data-calendly="">` and paste your link between the quotes, e.g. `data-calendly="https://calendly.com/your-username/discovery-call"`.
+
+Until a link is added, the form falls back to opening an email to you with the answers filled in.
 
 ### Design system
 

@@ -662,7 +662,7 @@
 
   var sections = Array.prototype.slice.call(document.querySelectorAll('[data-section]'));
   // "process" has no nav link of its own; it belongs to the Projects group
-  var spyMap = { process: 'projects' };
+  var spyMap = { process: 'projects', book: 'contact' };
   if ('IntersectionObserver' in window) {
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -690,6 +690,152 @@
     if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
   }, { passive: true });
   toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); });
+
+
+  /* ---------------------------------------------------------
+     Theme toggle (dark / light), remembered per browser
+  --------------------------------------------------------- */
+  var root = document.documentElement;
+  var themeBtn = $('themeToggle');
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+
+  function currentTheme() { return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+  function paintTheme(t) {
+    if (t === 'light') root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
+    var next = t === 'light' ? 'dark' : 'light';
+    themeBtn.setAttribute('aria-label', 'Switch to ' + next + ' mode');
+    themeBtn.setAttribute('title', 'Switch to ' + next + ' mode');
+    if (themeMeta) themeMeta.setAttribute('content', t === 'light' ? '#faf6f7' : '#0b0709');
+  }
+  paintTheme(currentTheme());
+  themeBtn.addEventListener('click', function () {
+    root.classList.add('theme-ready');
+    var t = currentTheme() === 'light' ? 'dark' : 'light';
+    paintTheme(t);
+    try { localStorage.setItem('theme', t); } catch (e) {}
+    if (calState.shown) renderCalendar();
+  });
+
+  /* ---------------------------------------------------------
+     Logo marquee: duplicate the list once for a seamless loop
+  --------------------------------------------------------- */
+  (function () {
+    var track = $('logosTrack');
+    if (!track || reduceMotion) return;
+    Array.prototype.slice.call(track.children).forEach(function (li) {
+      var c = li.cloneNode(true);
+      c.setAttribute('aria-hidden', 'true');
+      track.appendChild(c);
+    });
+  })();
+
+  /* ---------------------------------------------------------
+     Book a call: qualifying questions -> Calendly (prefilled)
+  --------------------------------------------------------- */
+  var bookSection = $('book');
+  var calBase = (bookSection.getAttribute('data-calendly') || '').trim();
+  var calOK = /^https:\/\/calendly\.com\/[\w\-./]+/i.test(calBase);
+  var calState = { shown: false, answers: null };
+  var form = $('qualForm'), calPanel = $('calPanel'), qErr = $('qualError');
+  var EMAIL = 'ejoseph.gonzales123@gmail.com';
+
+  if (!calOK) {
+    $('qualSubmit').textContent = 'Send my answers by email';
+    $('qualNote').textContent = 'Online scheduling is being set up. Send your answers and I will reply with available times.';
+    $('calEmptyText').textContent = 'Online scheduling is being set up. Send your answers by email and I will reply with available times.';
+  }
+
+  function readAnswers() {
+    var f = form.elements;
+    var tools = Array.prototype.filter.call(form.querySelectorAll('input[name="tools"]'), function (x) { return x.checked; })
+      .map(function (x) { return x.value; });
+    return {
+      name: f.name.value.trim(), email: f.email.value.trim(),
+      automate: f.automate.value.trim(), tools: tools.join(', '),
+      today: f.today.value, budget: f.budget.value, start: f.start.value
+    };
+  }
+
+  function validate(a) {
+    var bad = [];
+    if (!a.name) bad.push(form.elements.name);
+    if (!/^\S+@\S+\.\S+$/.test(a.email)) bad.push(form.elements.email);
+    if (!a.automate) bad.push(form.elements.automate);
+    if (!a.today) bad.push(form.elements.today);
+    if (!a.budget) bad.push(form.elements.budget);
+    if (!a.start) bad.push(form.elements.start);
+    Array.prototype.forEach.call(form.querySelectorAll('input, textarea, select'), function (x) { x.removeAttribute('aria-invalid'); });
+    bad.forEach(function (x) { x.setAttribute('aria-invalid', 'true'); });
+    return bad;
+  }
+
+  function calendlyURL(a) {
+    var light = currentTheme() === 'light';
+    var p = [
+      'embed_domain=' + encodeURIComponent(location.hostname || 'localhost'),
+      'embed_type=Inline',
+      'hide_gdpr_banner=1',
+      'background_color=' + (light ? 'ffffff' : '130d10'),
+      'text_color=' + (light ? '1b1014' : 'f6f0f2'),
+      'primary_color=' + (light ? 'd00f38' : 'ff1440'),
+      'name=' + encodeURIComponent(a.name),
+      'email=' + encodeURIComponent(a.email),
+      'a1=' + encodeURIComponent(a.automate),
+      'a2=' + encodeURIComponent(a.tools || 'Not specified'),
+      'a3=' + encodeURIComponent(a.today),
+      'a4=' + encodeURIComponent(a.budget),
+      'a5=' + encodeURIComponent(a.start)
+    ];
+    return calBase + (calBase.indexOf('?') > -1 ? '&' : '?') + p.join('&');
+  }
+
+  function renderCalendar() {
+    calPanel.innerHTML = '';
+    var fr = document.createElement('iframe');
+    fr.src = calendlyURL(calState.answers);
+    fr.title = 'Schedule a discovery call';
+    fr.loading = 'lazy';
+    calPanel.appendChild(fr);
+    calState.shown = true;
+  }
+
+  function mailtoURL(a) {
+    var body = [
+      'Hi Emmanuel,', '',
+      'I would like to book a discovery call.', '',
+      'Name: ' + a.name,
+      'Email: ' + a.email,
+      'What I want to automate: ' + a.automate,
+      'Tools I use today: ' + (a.tools || 'Not specified'),
+      'How it is handled today: ' + a.today,
+      'Estimated budget (USD): ' + a.budget,
+      'When I want to start: ' + a.start
+    ].join('\n');
+    return 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Discovery call request') + '&body=' + encodeURIComponent(body);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var a = readAnswers();
+    var bad = validate(a);
+    if (bad.length) {
+      qErr.textContent = 'Please complete the highlighted fields.';
+      qErr.hidden = false;
+      bad[0].focus();
+      return;
+    }
+    qErr.hidden = true;
+    calState.answers = a;
+    if (calOK) {
+      renderCalendar();
+      $('qualSubmit').textContent = 'Update calendar with my answers';
+      if (window.matchMedia('(max-width: 960px)').matches) {
+        calPanel.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      }
+    } else {
+      window.location.href = mailtoURL(a);
+    }
+  });
 
   /* ---------------------------------------------------------
      Init

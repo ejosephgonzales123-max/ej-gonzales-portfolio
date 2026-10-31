@@ -20,7 +20,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
-<script>document.documentElement.classList.add('js');</script>
+<script>
+document.documentElement.classList.add('js');
+try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -38,6 +41,9 @@
     <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></symbol>
     <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
     <symbol id="i-cap" viewBox="0 0 24 24"><path d="M12 4 2 9l10 5 10-5-10-5z"/><path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></symbol>
   </defs>
 </svg>
@@ -65,10 +71,15 @@
       <a href="#certifications" class="nav__link">Certifications</a>
       <a href="#languages" class="nav__link">Languages</a>
       <a href="#contact" class="nav__link">Contact</a>
-      <a href="#contact" class="btn btn--primary nav__cta--mobile">Let's Work Together</a>
+      <a href="#book" class="btn btn--primary nav__cta--mobile">Let's Work Together</a>
     </nav>
 
-    <a href="#contact" class="btn btn--primary nav__cta">Let's Work Together</a>
+    <a href="#book" class="btn btn--primary nav__cta">Let's Work Together</a>
+
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" title="Switch to light mode">
+      <svg class="i i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+      <svg class="i i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+    </button>
 
     <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav">
       <span></span><span></span><span></span>
@@ -196,6 +207,28 @@
 
 <!-- ============ SKILLS ============ -->
 <section class="section" id="skills" data-section>
+  <div class="logos" id="logos" aria-label="Platforms and apps I work with">
+    <ul class="logos__track" id="logosTrack">
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/claude.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Claude</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/elevenlabs.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">ElevenLabs</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/n8n.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">n8n</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/zapier.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Zapier</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/make.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Make</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/gohighlevel.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">GoHighLevel</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/hubspot.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">HubSpot</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/airtable.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Airtable</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/asana.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Asana</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/apollo.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Apollo</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/xero.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Xero</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/discord.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Discord</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/railway.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Railway</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/gemini.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Gemini</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/chatgpt.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">ChatGPT</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/vapi.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Vapi AI</span></li>
+        <li class="logo"><span class="logo__chip"><img src="assets/logos/slack.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="logo__name">Slack</span></li>
+    </ul>
+  </div>
+
   <div class="container split">
     <div class="split__head">
       <h2>Tools &amp; Technologies</h2>
@@ -362,7 +395,8 @@
         <p>I'm interested in helping businesses turn repetitive manual processes into practical automated workflows.</p>
 
         <div class="cta__actions">
-          <a href="mailto:ejoseph.gonzales123@gmail.com" class="btn btn--primary">Email Me</a>
+          <a href="#book" class="btn btn--primary">Book a Call</a>
+          <a href="mailto:ejoseph.gonzales123@gmail.com" class="btn btn--ghost">Email Me</a>
           <a href="https://www.linkedin.com/in/emmanuel-joseph-gonzales-075a60236/" target="_blank" rel="noopener" class="btn btn--ghost">LinkedIn</a>
           <a href="https://www.upwork.com/freelancers/~01f36520d937a4c162" target="_blank" rel="noopener" class="btn btn--ghost">Upwork</a>
         </div>
@@ -377,6 +411,94 @@
           <li><svg class="i"><use href="#i-external"/></svg><a href="https://www.onlinejobs.ph/jobseekers/info/4679497" target="_blank" rel="noopener">OnlineJobs.ph profile</a></li>
         </ul>
       </address>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOOK A CALL ============ -->
+<!-- To turn on the live calendar, paste your Calendly event link into data-calendly below,
+     e.g. data-calendly="https://calendly.com/your-username/discovery-call" -->
+<section class="section" id="book" data-section data-calendly="">
+  <div class="container">
+    <div class="section__head">
+      <h2>Book a Discovery Call</h2>
+      <p>Answer a few quick questions so we can use the call well, then pick a time that suits you.</p>
+    </div>
+
+    <div class="book">
+      <form class="qual" id="qualForm" novalidate>
+        <h3>Before we meet</h3>
+
+        <div class="field">
+          <label for="q-name">Your name</label>
+          <input id="q-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="q-email">Email</label>
+          <input id="q-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="q-automate">What do you want to automate?</label>
+          <textarea id="q-automate" name="automate" rows="3" required placeholder="Example: send new website leads to HubSpot and email a follow-up"></textarea>
+        </div>
+
+        <fieldset class="field">
+          <legend>Which tools do you use today?</legend>
+          <div class="checks">
+            <label><input type="checkbox" name="tools" value="Gmail"><span>Gmail</span></label>
+            <label><input type="checkbox" name="tools" value="Google Sheets"><span>Google Sheets</span></label>
+            <label><input type="checkbox" name="tools" value="Slack"><span>Slack</span></label>
+            <label><input type="checkbox" name="tools" value="HubSpot"><span>HubSpot</span></label>
+            <label><input type="checkbox" name="tools" value="GoHighLevel"><span>GoHighLevel</span></label>
+            <label><input type="checkbox" name="tools" value="Airtable"><span>Airtable</span></label>
+            <label><input type="checkbox" name="tools" value="Notion"><span>Notion</span></label>
+            <label><input type="checkbox" name="tools" value="Other"><span>Other</span></label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="q-today">How is it handled today?</label>
+          <select id="q-today" name="today" required>
+            <option value="">Select one</option>
+            <option>Fully manual</option>
+            <option>Partly automated</option>
+            <option>Not handled yet</option>
+            <option>Another tool I want to replace</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q-budget">Estimated budget (USD)</label>
+          <select id="q-budget" name="budget" required>
+            <option value="">Select one</option>
+            <option>Under $500</option>
+            <option>$500 – $1,500</option>
+            <option>$1,500 – $5,000</option>
+            <option>$5,000+</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q-start">When do you want to start?</label>
+          <select id="q-start" name="start" required>
+            <option value="">Select one</option>
+            <option>As soon as possible</option>
+            <option>Within a month</option>
+            <option>In 1–3 months</option>
+            <option>Just exploring</option>
+          </select>
+        </div>
+
+        <p class="qual__error" id="qualError" role="alert" hidden></p>
+        <button type="submit" class="btn btn--primary" id="qualSubmit">Continue to calendar</button>
+        <p class="qual__note" id="qualNote">Your answers are passed to the booking page so we can skip the back-and-forth.</p>
+      </form>
+
+      <div class="book__cal" id="calPanel" aria-live="polite">
+        <div class="book__empty" id="calEmpty">
+          <svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>
+          <p id="calEmptyText">Your calendar appears here once you answer the questions.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
