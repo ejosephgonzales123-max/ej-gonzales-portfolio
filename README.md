@@ -147,3 +147,8 @@ Any time you push new commits to `main`, GitHub Pages automatically rebuilds and
 - External resources used: Google Fonts (Archivo, IBM Plex Sans, IBM Plex Mono) — no other CDNs or paid icon services.
 - All icons are inline SVG, so nothing depends on an icon font or paid service.
 - Reduced-motion is respected (`prefers-reduced-motion`), and the mobile menu, modals, and buttons are keyboard-accessible.
+
+
+## Decorative backgrounds
+
+Section backgrounds live in `assets/bg/` and are set in the `.deco--*` rules at the end of `css/style.css`. Change `--deco-op` to make one stronger or weaker, or remove the `deco deco--…` classes from a section in `index.html` to turn it off. In light mode they are recolored to a pale wash automatically.
