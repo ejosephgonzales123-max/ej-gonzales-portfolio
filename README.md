@@ -34,10 +34,10 @@ The scrolling strip above "Tools & Technologies" is the `<ul id="logosTrack">` l
 
 ### Booking calendar (Calendly)
 
-The last section, "Book a Discovery Call", asks pre-qualifying questions and then shows your Calendly calendar.
+The last section, "Book a Discovery Call", shows your live Calendly calendar. The pre-qualifying questions are asked by Calendly when the visitor picks a time.
 
 1. In Calendly, create an event type (for example "Discovery Call").
-2. Under **Invitee questions**, add these five questions **in this order** so the visitor's answers prefill:
+2. Under **Invitee questions**, add these five questions (they match the list shown beside the calendar):
    1. What do you want to automate?
    2. Which tools do you use today?
    3. How is it handled today?
@@ -45,7 +45,7 @@ The last section, "Book a Discovery Call", asks pre-qualifying questions and the
    5. When do you want to start?
 3. In `index.html`, find `<section ... id="book" data-section data-calendly="">` and paste your link between the quotes, e.g. `data-calendly="https://calendly.com/your-username/discovery-call"`.
 
-Until a link is added, the form falls back to opening an email to you with the answers filled in.
+Until a link is added, the section shows a small form that opens an email to you with the answers filled in.
 
 ### Design system
 

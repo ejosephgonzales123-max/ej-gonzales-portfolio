@@ -713,7 +713,6 @@
     var t = currentTheme() === 'light' ? 'dark' : 'light';
     paintTheme(t);
     try { localStorage.setItem('theme', t); } catch (e) {}
-    if (calState.shown) renderCalendar();
   });
 
   /* ---------------------------------------------------------
@@ -739,12 +738,6 @@
   var form = $('qualForm'), calPanel = $('calPanel'), qErr = $('qualError');
   var EMAIL = 'ejoseph.gonzales123@gmail.com';
 
-  if (!calOK) {
-    $('qualSubmit').textContent = 'Send my answers by email';
-    $('qualNote').textContent = 'Online scheduling is being set up. Send your answers and I will reply with available times.';
-    $('calEmptyText').textContent = 'Online scheduling is being set up. Send your answers by email and I will reply with available times.';
-  }
-
   function readAnswers() {
     var f = form.elements;
     var tools = Array.prototype.filter.call(form.querySelectorAll('input[name="tools"]'), function (x) { return x.checked; })
@@ -769,33 +762,34 @@
     return bad;
   }
 
-  function calendlyURL(a) {
+  function calendlyURL() {
     var light = currentTheme() === 'light';
     var p = [
       'embed_domain=' + encodeURIComponent(location.hostname || 'localhost'),
       'embed_type=Inline',
       'hide_gdpr_banner=1',
-      'background_color=' + (light ? 'ffffff' : '130d10'),
-      'text_color=' + (light ? '1b1014' : 'f6f0f2'),
-      'primary_color=' + (light ? 'd00f38' : 'ff1440'),
-      'name=' + encodeURIComponent(a.name),
-      'email=' + encodeURIComponent(a.email),
-      'a1=' + encodeURIComponent(a.automate),
-      'a2=' + encodeURIComponent(a.tools || 'Not specified'),
-      'a3=' + encodeURIComponent(a.today),
-      'a4=' + encodeURIComponent(a.budget),
-      'a5=' + encodeURIComponent(a.start)
+      'background_color=' + (light ? 'ffffff' : 'ffffff'),
+      'text_color=1b1014',
+      'primary_color=' + (light ? 'd00f38' : 'd00f38')
     ];
     return calBase + (calBase.indexOf('?') > -1 ? '&' : '?') + p.join('&');
   }
 
   function renderCalendar() {
+    calPanel.className = 'book__cal book__cal--live';
     calPanel.innerHTML = '';
     var fr = document.createElement('iframe');
-    fr.src = calendlyURL(calState.answers);
+    fr.src = calendlyURL();
     fr.title = 'Schedule a discovery call';
     fr.loading = 'lazy';
     calPanel.appendChild(fr);
+    var a = document.createElement('a');
+    a.className = 'book__open';
+    a.href = calBase;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = 'Open calendar in Calendly';
+    calPanel.appendChild(a);
     calState.shown = true;
   }
 
@@ -814,28 +808,23 @@
     return 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Discovery call request') + '&body=' + encodeURIComponent(body);
   }
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var a = readAnswers();
-    var bad = validate(a);
-    if (bad.length) {
-      qErr.textContent = 'Please complete the highlighted fields.';
-      qErr.hidden = false;
-      bad[0].focus();
-      return;
-    }
-    qErr.hidden = true;
-    calState.answers = a;
-    if (calOK) {
-      renderCalendar();
-      $('qualSubmit').textContent = 'Update calendar with my answers';
-      if (window.matchMedia('(max-width: 960px)').matches) {
-        calPanel.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  if (calOK) {
+    renderCalendar();
+  } else {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var a = readAnswers();
+      var bad = validate(a);
+      if (bad.length) {
+        qErr.textContent = 'Please complete the highlighted fields.';
+        qErr.hidden = false;
+        bad[0].focus();
+        return;
       }
-    } else {
+      qErr.hidden = true;
       window.location.href = mailtoURL(a);
-    }
-  });
+    });
+  }
 
   /* ---------------------------------------------------------
      Init
