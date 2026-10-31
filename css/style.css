@@ -1386,19 +1386,19 @@ figure{ margin: 0; }
 #home.deco--robot::before{ -webkit-mask-composite: source-in; mask-composite: intersect; }
 #contact.deco--robot{ --deco-pos: 50% 30%; --deco-op: 0.3;
   --deco-mask: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent); }
-.deco--redteam{ --deco-img: url(../assets/bg/redteam.webp); --deco-pos: 85% 40%; --deco-op: 0.24;
-  --deco-mask: linear-gradient(to left, #000 5%, transparent 55%); }
-.deco--chip{ --deco-img: url(../assets/bg/chip.webp); --deco-op: 0.26; }
-.deco--dash{ --deco-img: url(../assets/bg/dash.webp); --deco-pos: center 30%; --deco-op: 0.16; }
 .deco--poison{ --deco-img: url(../assets/bg/poison.webp); --deco-pos: center; --deco-op: 0.24; }
-#book.deco--chip{ --deco-op: 0.2; }
 
 /* light theme: recolor the dark artwork to a pale red-on-white wash */
 :root[data-theme="light"] .deco::before{
   filter: invert(1) hue-rotate(180deg) saturate(1.2);
-  opacity: calc(var(--deco-op, 0.3) * 0.55);
+  opacity: calc(var(--deco-op, 0.3) * 0.22);
 }
 @media (max-width: 760px){
   .deco::before{ opacity: calc(var(--deco-op, 0.3) * 0.7); }
-  .deco--robot, .deco--redteam{ --deco-pos: 60% 30%; }
+  .deco--robot{ --deco-pos: 60% 30%; }
 }
+
+.deco--tiles{ --deco-img: url(../assets/bg/tiles.webp); --deco-pos: center; --deco-op: 0.5; }
+.deco--tunnel{ --deco-img: url(../assets/bg/tunnel.webp); --deco-pos: center; --deco-op: 0.3; }
+.deco--plexus{ --deco-img: url(../assets/bg/plexus.webp); --deco-pos: center; --deco-op: 0.4; }
+#book.deco--tiles{ --deco-op: 0.4; }
